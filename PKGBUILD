@@ -22,8 +22,6 @@ optdepends=('geoclue: For elocation'
             'gst-libav: Video and thumbnails with ffmpeg/libav'
             'libreoffice: Office document thumbnails'
             'python2: Compare Eina benchmarks')
-provides=("$_pkgname=$pkgver" elementary{,-git}=$pkgver "evas_generic_loaders=$pkgver")
-conflicts=("$_pkgname" elementary{,-git} elementary_test{,-git} evas_generic_loaders{,-git})
 options=('debug')
 source=("git://git.enlightenment.org/core/$_pkgname.git")
 sha256sums=('SKIP')
@@ -65,6 +63,9 @@ build() {
 }
 
 package_efl-git() {
+  conflicts=("$_pkgname" elementary{,-git} elementary_test{,-git} evas_generic_loaders{,-git})
+  provides=("$_pkgname=$pkgver" elementary{,-git}=$pkgver "evas_generic_loaders=$pkgver")
+
   cd $_pkgname
 
   make -j1 DESTDIR="$pkgdir" install
@@ -79,7 +80,8 @@ package_efl-git() {
 
 package_efl-git-docs() {
   pkgdesc="Documentation for the Enlightenment Foundation Libraries"
-  depends=()
+  conflicts=("$_pkgname-docs")
+  depends=('efl-git')
 
   cd "${srcdir}/${_pkgname}"
   install -d "${pkgdir}/usr/share/doc/${_pkgname}"
