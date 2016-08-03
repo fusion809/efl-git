@@ -3,7 +3,7 @@
 
 _pkgname=efl
 pkgname=("$_pkgname-git" "$_pkgname-git-docs")
-pkgver=1.18.0beta1.49362.g37735d8
+pkgver=1.18.0beta2.49394.g9f5e5ae
 pkgrel=1
 pkgdesc="Enlightenment Foundation Libraries - Development version"
 arch=('i686' 'x86_64')
