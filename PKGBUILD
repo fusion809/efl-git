@@ -3,7 +3,7 @@
 
 _pkgname=efl
 pkgname=("$_pkgname" "$_pkgname-docs")
-_pkgver=1.18.0-rc
+_pkgver=1.18.0
 pkgver=${_pkgver//-/.}
 pkgrel=1
 pkgdesc="Enlightenment Foundation Libraries - Development version"
