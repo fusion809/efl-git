@@ -2,8 +2,9 @@
 # Contributor: Ronald van Haren <ronald.archlinux.org>
 
 _pkgname=efl
-pkgname=("$_pkgname-git" "$_pkgname-git-docs")
-pkgver=1.18.0beta2.49394.g9f5e5ae
+pkgname=("$_pkgname" "$_pkgname-docs")
+_pkgver=1.18.0-rc
+pkgver=${_pkgver//-/.}
 pkgrel=1
 pkgdesc="Enlightenment Foundation Libraries - Development version"
 arch=('i686' 'x86_64')
@@ -23,17 +24,17 @@ optdepends=('geoclue: For elocation'
             'libreoffice: Office document thumbnails'
             'python2: Compare Eina benchmarks')
 options=('debug')
-source=("git://git.enlightenment.org/core/$_pkgname.git")
+source=("git://git.enlightenment.org/core/$_pkgname.git#tag=v${_pkgver}")
 sha256sums=('SKIP')
 
-pkgver() {
-  cd $_pkgname
+#pkgver() {
+#  cd $_pkgname
 
-  local efl_version=$(grep -m1 EFL_VERSION configure.ac | awk -F [][] '{print $2 "." $4 "." $6}')
-  efl_version=$efl_version$(awk 'match($0, /^AC_INIT\(.*\[efl_version-?([^\]]*)\]/, a) {print a[1]}' configure.ac)
+ # local efl_version=$(grep -m1 EFL_VERSION configure.ac | awk -F [][] '{print $2 "." $4 "." $6}')
+#  efl_version=$efl_version$(awk 'match($0, /^AC_INIT\(.*\[efl_version-?([^\]]*)\]/, a) {print a[1]}' configure.ac)
 
-  printf "%s.%s.g%s" "$efl_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
+#  printf "%s.%s.g%s" "$efl_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+#}
 
 build() {
   cd $_pkgname
@@ -62,8 +63,8 @@ build() {
   make -j1 doc
 }
 
-package_efl-git() {
-  conflicts=("$_pkgname" elementary{,-git} elementary_test{,-git} evas_generic_loaders{,-git})
+package_efl() {
+  conflicts=("$_pkgname-git" elementary{,-git} elementary_test{,-git} evas_generic_loaders{,-git})
   provides=("$_pkgname=$pkgver" elementary{,-git}=$pkgver "evas_generic_loaders=$pkgver")
 
   cd $_pkgname
@@ -78,10 +79,10 @@ package_efl-git() {
   install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname/" AUTHORS COMPLIANCE COPYING COPYING.images licenses/COPYING.{BSD,SMALL}
 }
 
-package_efl-git-docs() {
+package_efl-docs() {
   pkgdesc="Documentation for the Enlightenment Foundation Libraries"
-  conflicts=("$_pkgname-docs")
-  depends=('efl-git')
+  conflicts=("$_pkgname-git-docs")
+  depends=('efl')
 
   cd "${srcdir}/${_pkgname}"
   install -d "${pkgdir}/usr/share/doc/${_pkgname}"
